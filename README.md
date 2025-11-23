@@ -32,7 +32,7 @@
 ## 🚀 주요 프로젝트
 
 ### ☀️ 태양광 추적 시스템
-(https://github.com/ChangHoiAn/Project-Solar-Tracking-system)
+[태양광 추적 시스템](https://github.com/ChangHoiAn/Project-Solar-Tracking-system)
 - STM32 기반으로 태양 위치 추적 → 효율적 에너지 수집
 - 서보 모터 제어 및 센서 데이터 처리
 
