@@ -2,9 +2,7 @@
 
 # 👋 안녕하세요!
 
-![Profile Views](https://komarev.com/ghpvc/?username=yourusername&color=blue)
-![GitHub followers](https://img.shields.io/github/followers/yourusername?style=social)
-![GitHub stars](https://img.shields.io/github/stars/yourusername?style=social)
+
 
 </div>
 
@@ -28,25 +26,22 @@
 <img src="https://img.shields.io/badge/-ChatGPT-00A67E?style=flat" />
 </p>
 
-📫 **연락처:** [이메일 주소]
+📫 **연락처:** [changhoian99@gmail.com]
 
 ---
 
 ## 🚀 주요 프로젝트
 
 ### ☀️ 태양광 추적 시스템
-![Solar Tracker](https://via.placeholder.com/800x400.png?text=Solar+Tracking+System+Image)
 - STM32 기반으로 태양 위치 추적 → 효율적 에너지 수집
 - 서보 모터 제어 및 센서 데이터 처리
 
 ### 🔐 IoT 기반 실시간 침입 감지 시스템
-![IoT Security](https://via.placeholder.com/800x400.png?text=IoT+Security+System+Image)
 - STM32 GPIO 인터럽트로 바닥 버튼 입력 감지
 - Wi-Fi로 Raspberry Pi → MySQL DB 저장
 - 침입 시 Bluetooth로 Arduino 제어 → 부저, LED, LCD
 
 ### 🤖 Raspberry Pi5 + Hailo 기반 AI 면접 시스템
-![AI Interview](https://via.placeholder.com/800x400.png?text=AI+Interview+System+Image)
 - Raspberry Pi5 + Hailo 가속기로 정량적 AI 면접 구현
 - 웹캠으로 자세·표정 XML 저장
 - PC 클라이언트가 XML을 받아 LLM(ChatGPT) 분석 → 면접 점수 제공
@@ -66,7 +61,7 @@
 Embedded System | IoT | Motor Control | ROS2 | Linux Kernel | AI Edge Computing
 
 ### 📫 연락
-Email: [이메일 주소]
+Email: [changhoian99@gmail.com]
 
 ---
 
