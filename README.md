@@ -50,6 +50,7 @@
 - 면접 시작/종료 명령 Raspberry Pi로 전송, 녹화 및 데이터 처리 자동화
 
 ### ⚙️ 모터 제어 및 MATLAB Simulink 시뮬레이션
+[센서리스 모터 제어](https://github.com/ChangHoiAn/Project-Motor-Control):
 - PMSM모터 속도 제어 Matlab simulink로 구성 및 실행
 - C2000사의 TMS MCU를 이용하여 속도제어를 구현
 
