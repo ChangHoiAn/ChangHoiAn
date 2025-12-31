@@ -55,7 +55,14 @@ MCU <-->|UART| PC[PC QT App]
   - 정상: RPi daemon으로 명령 전달 / 응답 수신
   - 비상: RPi 로그/쉘 스트림을 PC로 브릿지
 
-### 3) Raspberry Pi (TurtleBot, Ubuntu Server) + daemon
+### 3) Raspberry Pi(TurtleBot, Ubuntu Server) + daemon
+- **역할**: Vendor나 UART로 들어온 명령을 파싱/실행/스케줄링하고 긴급시에 UART로 쉘 연결
+- **명령 분류**
+  - `S` (Static): 즉시 실행 단발 명령 (예: `apt update`)
+  - `D` (Delay): 지연이 필요한 명령 (예: “5m 이동 후 다음 단계”)
+  - `C` (Continuous): bringup처럼 **백그라운드/지속 실행** 명령
+
+### 4) Kernel
 - **역할**: Vendor나 UART로 들어온 명령을 파싱/실행/스케줄링하고 긴급시에 UART로 쉘 연결
 - **명령 분류**
   - `S` (Static): 즉시 실행 단발 명령 (예: `apt update`)
