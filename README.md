@@ -94,6 +94,6 @@
 
 ## ⭐ GitHub Stats
 
-<img src="./github-metrics.svg" alt="GitHub Metrics" />
+![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ChangHoiAn&layout=compact&theme=radical)
 
 </div>
