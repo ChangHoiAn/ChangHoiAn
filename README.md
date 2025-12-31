@@ -96,4 +96,6 @@
 
 ![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=ChangHoiAn&layout=compact&theme=radical)
 
+![GitHub stats](https://github-readme-stats.vercel.app/api?username=ChangHoiAn&show_icons=true&theme=radical)
+
 </div>
