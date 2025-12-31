@@ -93,7 +93,8 @@
 <div align="center">
 
 ## ⭐ GitHub Stats
-[![Metrics](./github-metrics.svg)](https://github.com/lowlighter/metrics)
+[![Metrics](https://raw.githubusercontent.com/ChangHoiAn/ChangHoiAn/main/github-metrics.svg)](https://github.com/lowlighter/metrics)
+
 
 
 </div>
