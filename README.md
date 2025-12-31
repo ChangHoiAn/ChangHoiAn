@@ -28,6 +28,7 @@
 
 ## 🏛️ 시스템 아키텍처 (System Architecture)
 
+### 1) 평상시 제어 모드 (Normal Operation Mode)
 ```mermaid
 flowchart LR
     %% 스타일 정의
@@ -36,102 +37,114 @@ flowchart LR
     classDef rpi fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:black;
     classDef usb fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:black;
 
-    %% ==========================================
-    %% 1. PC 영역
-    %% ==========================================
-    subgraph PC_Group [💻 PC ]
+    %% 1. PC
+    subgraph PC_Group [💻 PC (Client)]
         direction TB
         QT[**QT App**\nGUI Controller]
-        TERM[**Terminal**\nEmergency Shell Access]
         K_PC[**Linux Kernel Driver**\n/dev/custom_usb_pc]
-        
         QT <-->|read/write| K_PC
-        QT <-->|mount| MSC_Drive[MSC Drive]
     end
 
-    %% ==========================================
-    %% 2. USB 연결 (PC <-> STM32)
-    %% ==========================================
-    subgraph USB_Link1 [USB Composite Link]
-        direction TB
+    %% 2. Link PC-STM32
+    subgraph USB_Link1 [High-Speed Link]
         L_VEN1[**Vendor Interface**\nMain Data Stream]
-        L_CDC[**CDC Interface**\nEmergency UART Bridge]
-        L_MSC[**MSC Interface**\nLog Storage]
     end
 
-    %% ==========================================
-    %% 3. STM32 (Black Pill) 영역
-    %% ==========================================
-    subgraph STM32_Group [🕹️ Black Pill ]
+    %% 3. STM32
+    subgraph STM32_Group [🕹️ Black Pill]
         direction TB
-        TINY[**TinyUSB Stack**\nComposite Device]
-        
-        subgraph Logic [Firmware Logic]
-            FW_VEN[Vendor Logic\nPassthrough]
-            FW_CDC[CDC Logic\nUART Bridge]
-            FW_MSC[MSC Logic\nSD Card I/O]
-        end
+        FW_VEN[**Vendor Logic**\nPassthrough Mode]
     end
 
-    %% ==========================================
-    %% 4. 연결 (STM32 <-> RPi)
-    %% ==========================================
+    %% 4. Link STM32-RPi
     subgraph Link_RPi [RPi Connection]
-        direction TB
-        L_VEN2[**USB Vendor**\n/dev/ttyUSB or Custom]
-        L_UART[**Physical UART**\nGPIO 14/15]
+        L_VEN2[**USB Vendor**\n/dev/custom_usb_rpi]
     end
 
-    %% ==========================================
-    %% 5. Raspberry Pi 영역
-    %% ==========================================
-    subgraph RPI_Group [🤖 Raspberry Pi ]
+    %% 5. RPi
+    subgraph RPI_Group [🤖 Raspberry Pi]
         direction TB
         K_RPI[**Linux Kernel Driver**\n/dev/custom_usb_rpi]
         DAEMON[**Daemon Process**\nCommand Parser]
-        AGETTY[**agetty**\nSerial Console]
+        ROS2[**ROS 2 System**\nTurtleBot Control]
         
-        subgraph OS [System]
-            ROS2[ROS 2 Nodes]
-            BASH[Bash Shell]
+        K_RPI <==>|Character Dev I/O| DAEMON
+        DAEMON -->|S, D, C Cmd| ROS2
+    end
+
+    %% 흐름 연결
+    K_PC <==>|Bulk Transfer| L_VEN1
+    L_VEN1 <==> FW_VEN
+    FW_VEN <==>|Bulk Transfer| L_VEN2
+    L_VEN2 <==> K_RPI
+
+    %% 스타일 적용
+    class PC_Group,QT,K_PC pc;
+    class STM32_Group,FW_VEN mcu;
+    class RPI_Group,K_RPI,DAEMON,ROS2 rpi;
+    class USB_Link1,L_VEN1,Link_RPi,L_VEN2 usb;
+```
+### 2) 긴급 복구 및 유지보수 모드 (Emergency & Maintenance Mode)
+```mermaid
+flowchart LR
+    %% 스타일 정의
+    classDef pc fill:#e3f2fd,stroke:#1565c0,stroke-width:2px,color:black;
+    classDef mcu fill:#fff9c4,stroke:#fbc02d,stroke-width:2px,color:black;
+    classDef rpi fill:#e8f5e9,stroke:#2e7d32,stroke-width:2px,color:black;
+    classDef usb fill:#f3e5f5,stroke:#7b1fa2,stroke-width:2px,stroke-dasharray: 5 5,color:black;
+
+    %% 1. PC
+    subgraph PC_Group [💻 PC (Admin)]
+        direction TB
+        TERM[**Terminal**\nPutty / Qt Terminal]
+        MSC_Drive[**MSC Drive**\nLog Storage]
+    end
+
+    %% 2. Link PC-STM32
+    subgraph USB_Link1 [Emergency Link]
+        L_CDC[**CDC Interface**\nVirtual COM Port]
+        L_MSC[**MSC Interface**\nMass Storage]
+    end
+
+    %% 3. STM32
+    subgraph STM32_Group [🕹️ Black Pill]
+        direction TB
+        subgraph Logic [Firmware Logic]
+            FW_CDC[**CDC Logic**\nUART Bridge]
+            FW_MSC[**MSC Logic**\nSD Card I/O]
         end
     end
 
-    %% ==========================================
-    %% 흐름 연결 (Wiring)
-    %% ==========================================
+    %% 4. Link STM32-RPi
+    subgraph Link_RPi [Physical Connection]
+        L_UART[**Physical UART**\nGPIO 14/15]
+    end
 
-    %% PC -> USB Link
-    K_PC <==>|Bulk Transfer| L_VEN1
-    TERM <-->|Virtual COM| L_CDC
-    MSC_Drive -.-> L_MSC
+    %% 5. RPi
+    subgraph RPI_Group [🤖 Raspberry Pi]
+        direction TB
+        AGETTY[**agetty**\nSerial Console]
+        BASH[**Bash Shell**\nSystem Recovery]
+        
+        AGETTY <-->|Login/Input| BASH
+    end
 
-    %% USB Link -> STM32
-    L_VEN1 <==> FW_VEN
+    %% 흐름 연결
+    TERM <-->|Command| L_CDC
+    MSC_Drive -.->|Mount| L_MSC
+    
     L_CDC <--> FW_CDC
     L_MSC -.-> FW_MSC
-    TINY --- Logic
-
-    %% STM32 -> RPi Link
-    FW_VEN <==>|Bulk Transfer| L_VEN2
+    
     FW_CDC <-->|TX/RX Raw| L_UART
-
-    %% RPi Link -> RPi Internal
-    L_VEN2 <==> K_RPI
     L_UART <--> AGETTY
 
-    %% RPi Internal Process
-    K_RPI <==>|Character Dev I/O| DAEMON
-    DAEMON -->|S, D, C Cmd| ROS2
-    AGETTY <-->|Login/Input| BASH
-
     %% 스타일 적용
-    class PC_Group,QT,K_PC,TERM,MSC_Drive pc;
-    class STM32_Group,TINY,FW_VEN,FW_CDC,FW_MSC mcu;
-    class RPI_Group,K_RPI,DAEMON,AGETTY,ROS2,BASH rpi;
-    class USB_Link1,L_VEN1,L_CDC,L_MSC,Link_RPi,L_VEN2,L_UART usb;
+    class PC_Group,TERM,MSC_Drive pc;
+    class STM32_Group,FW_CDC,FW_MSC,Logic mcu;
+    class RPI_Group,AGETTY,BASH rpi;
+    class USB_Link1,L_CDC,L_MSC,Link_RPi,L_UART usb;
 ```
-
 ---
 
 ## 🧱 구성 요소 (Components)
