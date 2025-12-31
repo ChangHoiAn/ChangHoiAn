@@ -93,7 +93,7 @@
 <div align="center">
 
 ## ⭐ GitHub Stats
+[![Metrics](./github-metrics.svg)](https://github.com/lowlighter/metrics)
 
-<img src="./github-metrics.svg" alt="GitHub Metrics" />
 
 </div>
