@@ -22,3 +22,4 @@ jobs:
           plugin_languages_details: bytes-size, percentage
           plugin_languages_limit: 8
           filename: github-metrics.svg
+
