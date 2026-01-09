@@ -81,7 +81,7 @@ flowchart LR
 
 ---
 
-### 🔐 IoT 기반 실시간 침입 감지 시스템 (MCU ↔ SBC ↔ DB ↔ 액추에이터)
+### 🔐 IoT 기반 실시간 침입 감지 시스템 (MCU ↔ SBC ↔ DB ↔ Arduino)
 - **Repo:** [Project-Instruction-Detection-system](https://github.com/ChangHoiAn/Project-Instruction-Detection-system)
 - **내용**
   - STM32 GPIO 인터럽트로 이벤트 감지
