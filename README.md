@@ -106,23 +106,16 @@ flowchart LR
 
 ---
 
-## 🔮 앞으로 할 계획 (Next)
-
 ### 🎹 RTOS 기반 신디사이저 (STM32 Black Pill + FreeRTOS)
-- **주제**
-  - **RTOS 스케줄링** 기반으로 오디오 합성/입력/UI/출력을 태스크로 분리하고,
-    **저지연·안정적인 오디오 파이프라인**을 구현하는 임베디드 신디사이저
-- **구성 계획**
-  - Task: **Audio Engine** (Oscillator/Wavetable + ADSR + Mixer)
-  - Task: **I/O** (Encoder/Keypad 또는 MIDI(UART) 입력, 이벤트 큐)
-  - Task: **Output** (I2S DAC 또는 PWM/DAC 출력, 버퍼 관리)
-  - Task: **UI** (OLED 표시, Preset 관리)
-- **예정 기능**
-  - 파형(Sine/Saw/Square) + ADSR + 간단한 LPF/Delay
-  - Preset 저장/로드, 실시간 파라미터 조정
-  - (선택) MIDI 제어(UART) / 시리얼 커맨드 기반 제어
+- **Repo:** [Project-신디사이저](https://github.com/won-jong-wan/SYNTH_RTOS_BLACKPILL)
+- **내용**
+  - STM32 F4(Black Pill)와 FreeRTOS를 활용해 실시간 오디오 합성 및 파형 제어를 구현한 임베디드 전자 악기
+  - 오디오 처리, 입력 감지, 디스플레이 갱신을 멀티태스킹 환경에서 안정적으로 구동
+- **Embedded Point**
+  - RTOS Task 설계: Audio 생성, Input(로터리, 스위치), UI 태스크를 분리하고 우선순위 스케줄링으로 Audio Latency 최소화
+  - IPC: Queue와 Semaphore를 활용해 사용자 입력(ISR/Task)과 오디오 엔진 간 Thread-Safe 데이터 동기화
+  - Resource 최적화: 제한된 MCU 자원 내에서 DMA 및 버퍼링을 활용한 끊김 없는 파형 출력 구현
 
-> Repo 링크는 생성 후 여기에 추가 예정
 
 ---
 
